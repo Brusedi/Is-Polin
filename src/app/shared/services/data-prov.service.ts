@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http'; 
 
-
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/mergeMap'
 
@@ -61,6 +60,7 @@ export class DataProvService {
   public template = (loc:string , subloc:string = undefined ) => this.get(loc, subloc, RequestType.Template );
   public item     = (loc:string , subloc:string = undefined ) => this.get(loc, subloc);
   public items    = (loc:string ) => this.get(loc).map(x => ( <any[]>x === null) ? [] :<any[]>x );
+  
 
   public insert   = (loc:string , data:any ) => this.post(loc, undefined, data); //.subscribe(x => console.log(x) );
 
@@ -88,10 +88,6 @@ export class DataProvService {
       .mergeMap( x => this.getDataFromUri( x ))
       .map(x  => x.trim()===""? {}: JSON.parse(x) );
   }
-
-  
-
-
 
 
   // Uri prepare tools -----------------------------------------------
