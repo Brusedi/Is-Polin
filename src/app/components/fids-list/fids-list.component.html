@@ -1,3 +1,8 @@
-<p>
-  fids-list works!
-</p>
+<ng-container *ngIf="flights$ | async as flights"  >
+    <div class="container-fluid bg-dark text-light ">
+      <ng-container *ngFor="let flight of flights" class="container-fluid bg-dark text-light" >
+          <app-fids-item-base [flight] = flight >  </app-fids-item-base>
+      </ng-container>        
+    </div>
+</ng-container>  
+

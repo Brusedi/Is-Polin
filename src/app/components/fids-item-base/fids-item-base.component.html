@@ -1,0 +1,33 @@
+<ng-container *ngIf="flight" >
+  <div class="row">
+      <div class="col">
+          {{ flight.transDate | date:'dd.MM.yyyy' }} 
+      </div>
+
+      <div class="col"> 
+          {{ flight | flightFids2Flight }}
+      </div>
+
+      <div class="col"> 
+          {{ flight.dest }}
+      </div>
+
+      <div class="col">
+          {{ flight.time | date:'HH:mm' }} 
+      </div>
+
+      <div class="col">
+          {{ flight.timedelay | date:'HH:mm' }} 
+      </div>
+
+      <div class="col">
+          статус
+      </div>
+      
+      <div class="col">
+          выход
+      </div>
+
+  </div>
+  <hr class="style1">
+</ng-container>

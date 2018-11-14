@@ -1,7 +1,7 @@
 import { ActionReducerMap } from '@ngrx/store';
 
 import * as fromReducers from './reducers';
-
+import { flightFidsEffects } from './effects/flight-fids.effects';
 
 export interface State {
     //routerReducer: fromRouter.RouterReducerState;
@@ -13,3 +13,5 @@ export const reducers: ActionReducerMap<State> = {
 };
   
 //export const effects = [JnEffects];
+
+export const effects = [flightFidsEffects];

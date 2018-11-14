@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { FlightFids } from '@appModels/flight-fids';
-import { Observable } from 'rxjs/Observable';
 
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
+//import { Observable } from 'rxjs/Observable';
+
+import { catchError, map, tap, take } from 'rxjs/operators';
+
 
 import { DataProvService } from './data-prov.service';
 
-const LOCATION = 'api/heroes';
+const LOCATION = '/NvaAx/FlightFids';
 
 const MODULE_NAME    = 'John Galon';
 const COMPONENT_NAME = 'DataProvider';
@@ -25,7 +28,8 @@ export class FlightFidsService {
   getData (): Observable<FlightFids[]> {  //FlightFids[]
     return this.dataProv.items(LOCATION)
       .pipe(
-        map(x => <FlightFids[]>x),
+        map(x =><FlightFids[]>x  ),
+        map( x => x.slice(0,20) ),                      //TODO debug
         catchError(this.handleError('getFlights', []))
       );  
   }
