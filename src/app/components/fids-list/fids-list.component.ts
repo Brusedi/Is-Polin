@@ -8,6 +8,7 @@ import { FlightFids } from '@appModels/flight-fids';
 
 import * as fromSelectors from '@appStore/selectors/flight-fids.selectors';
 import { GetFlights } from '@appStore/actions/flight-fids.actions';
+import { AddAnyItem } from '@appStore/actions/any-entity-lazy-set.actions';
 
 @Component({
   selector: 'app-fids-list',
@@ -24,11 +25,17 @@ export class FidsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.store.dispatch( new GetFlights() )    
+    this.store.dispatch( new GetFlights() )  
+    
+    this.store.dispatch( new AddAnyItem({ name: "CompanyImages", location:"'/NvaAx/FlightFids'"}  ) )
+
+    //this.store.value.
+
 
     this.flights$ = this.store.pipe(select(fromSelectors.getFlightFids));    
-
     this.flights$.subscribe(x=> console.log(x));
+
+
 
   }
 
