@@ -22,7 +22,7 @@ export const anyEntytyinitialState: AnyEntytyState = adapter.getInitialState({
 
 export function reducer(state = anyEntytyinitialState, action: anyEntityLazyActions): AnyEntytyState {
     const removeIfExit = (x:any[], v:any ) => x.indexOf(v) > 0 ? x.slice( x.indexOf(v), 1): x ; 
-    
+    console.log(action)
     switch (action.type) {
         case AnyEntityLazyActionTypes.GET_ITEM:
             return { ...state, loading: true };    

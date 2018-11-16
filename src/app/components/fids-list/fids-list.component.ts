@@ -8,7 +8,8 @@ import { FlightFids } from '@appModels/flight-fids';
 
 import * as fromSelectors from '@appStore/selectors/flight-fids.selectors';
 import { GetFlights } from '@appStore/actions/flight-fids.actions';
-import { AddAnyItem } from '@appStore/actions/any-entity-lazy-set.actions';
+import { AddItem, ExecItemAction } from '@appStore/actions/any-entity-lazy-set.actions';
+import { GetItem } from '@appStore/actions/any-entity-lazy.actions';
 
 @Component({
   selector: 'app-fids-list',
@@ -27,15 +28,19 @@ export class FidsListComponent implements OnInit {
 
     this.store.dispatch( new GetFlights() )  
     
-    this.store.dispatch( new AddAnyItem({ name: "CompanyImages", location:"'/NvaAx/FlightFids'"}  ) )
+    this.store.dispatch( new AddItem({ name: "CompanyImages", location:"/NvaAx/NVAOMACUSTLOGO"}  ) )
 
-    //this.store.value.
+    this.store.dispatch( 
+      new ExecItemAction( 
+        {  name: "CompanyImages", itemAction: new GetItem( 'СУ' ) }  
+    ) );
 
+
+    this.store.select( x=> x.references.CompanyImages)
+      .subscribe(x=> console.log(x));
 
     this.flights$ = this.store.pipe(select(fromSelectors.getFlightFids));    
     this.flights$.subscribe(x=> console.log(x));
-
-
 
   }
 

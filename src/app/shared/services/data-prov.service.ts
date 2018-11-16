@@ -59,7 +59,7 @@ export class DataProvService {
   public metadata = (loc:string , subloc:string = undefined ) => this.get(loc, subloc, RequestType.Metadata );
   public template = (loc:string , subloc:string = undefined ) => this.get(loc, subloc, RequestType.Template );
   public item     = (loc:string , subloc:string = undefined ) => this.get(loc, subloc);
-  public items    = (loc:string ) => this.get(loc).map(x => ( <any[]>x === null) ? [] :<any[]>x );
+  public items    = (loc:string , subloc:string = undefined ) => this.get(loc, subloc).map(x => ( <any[]>x === null) ? [] :<any[]>x );
   
   
   public insert   = (loc:string , data:any ) => this.post(loc, undefined, data); //.subscribe(x => console.log(x) );

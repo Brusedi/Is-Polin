@@ -20,7 +20,6 @@ export class flightFidsEffects {
         ofType(flightFidsActionTypes.GetFlights),
         switchMap(() =>
           this.dataService.getData()
-          
            .pipe(
              map(x => new GetFlightsSuccess (x)),
              catchError(error => Observable.of(new ErrorFlights(error)))

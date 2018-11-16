@@ -1,7 +1,9 @@
 import { ActionReducerMap } from '@ngrx/store';
 
 import * as fromReducers from './reducers';
-import { flightFidsEffects } from './effects/flight-fids.effects';
+
+import { flightFidsEffects }        from './effects/flight-fids.effects';
+import { anyEntytySetEffects }      from './effects/any-entity-lazy-set.effects';
 
 
 export interface State {
@@ -17,4 +19,4 @@ export const reducers: ActionReducerMap<State> = {
   
 //export const effects = [JnEffects];
 
-export const effects = [flightFidsEffects];
+export const effects = [flightFidsEffects, anyEntytySetEffects];
