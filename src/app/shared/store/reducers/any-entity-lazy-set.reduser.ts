@@ -9,9 +9,11 @@ import { anyEntityLazyActions } from "@appStore/actions/any-entity-lazy.actions"
 
 // 
 export interface AnyEntytySetItemState<T> {
-    state:    AnyEntytyState<T>,
-    location: string             // http sublocation  key 
-    adapter : EntityAdapter<T> 
+    state      : AnyEntytyState<T>,
+    location   : string                        // http sublocation  key 
+    selectId   : (T) => any                    // entity to id value func
+    selBack    : (any) => string               // id value to http sublocation suffix
+
     action? : anyEntityLazyActions 
     //checking: boolean ,
     //cheked:false,
@@ -34,25 +36,25 @@ export function reducer(state :State  = initialState, action: AnyEntityLazySetAc
 
         case AnyEntityLazySetActionTypes.ADD_ANY_ENTITY_LAZY:
             return { ...state, [action.payload.name]: { 
-                                    state:      initStateFromAdapter( action.payload.adapter),
+                                    state:      fromEntityReduser.initStateFromSelFoo( action.payload.selectId),
                                     location:   action.payload.location,
-                                    action:     null ,
-                                    adapter:    action.payload.adapter
+                                    selectId:   action.payload.selectId,
+                                    selBack:    action.payload.selBack,
+                                    action:     null 
                                 } };    
 
         case AnyEntityLazySetActionTypes.EXEC_ANY_ENTITY_LAZY_ACTION: {
-            console.log(action.payload);
-            console.log(state);
+            //console.log(action.payload);
+            //console.log(state);
             var s = { ...state, 
                         [action.payload.name]:{ 
                             ...state[action.payload.name],
                             action: (<ExecItemAction>action).payload.itemAction,
-                            state: fromEntityReduser.reducerFromAdapter(
-                                state[action.payload.name].adapter
-                             ) (  state[action.payload.name].state, (<ExecItemAction>action).payload.itemAction )     
-                            //state: fromEntityReduser.reducer( state[action.payload.name].state, (<ExecItemAction>action).payload.itemAction ) 
+                            state: fromEntityReduser.reducerFromSelFoo( state[action.payload.name].selectId )(
+                                state[action.payload.name].state, (<ExecItemAction>action).payload.itemAction 
+                            )     
                     }};
-            console.log(s);        
+            //console.log(s);        
             return s;        
         };    
         

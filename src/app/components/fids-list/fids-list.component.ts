@@ -33,9 +33,9 @@ export class FidsListComponent implements OnInit {
     this.store.dispatch( new AddItem({ 
       name: "CompanyImages", 
       location:"/NvaAx/NVAOMACUSTLOGO", 
-      adapter: createEntityAdapter<custImages>(   { selectId: (x => x.custaccount ) }  
-               
-        ) }  ) )
+      selectId: ((x:custImages) => x.custaccount ),
+      selBack: (x:string) => ("?CUSTACCOUNT=" + x )
+     }  ) )
 
     this.store.dispatch( 
       new ExecItemAction( 
@@ -57,10 +57,40 @@ export class FidsListComponent implements OnInit {
         {  name: "CompanyImages", itemAction: new GetItem( 'ЛА3e' ) }  
     ) );
 
-    //this.store.pipe(select(fromSelectors..getFlightFids));    
 
-    // this.store.select( x=> x)
-    //   .subscribe(x=> console.log(x));
+
+    this.store.dispatch( new AddItem({ 
+      name: "NvaSdEventType", 
+      location:"/NvaAx/NvaSdEventType", 
+      selectId: ((x:{id:string}) => x.id ),
+      selBack: (x:string) => ("?ID=" + x )
+     }  ) )
+    
+     this.store.dispatch( 
+      new ExecItemAction( 
+        {  name: "NvaSdEventType", itemAction: new GetItem( 'ЛА3e' ) }  
+      ) );
+
+      this.store.dispatch( 
+        new ExecItemAction( 
+          {  name: "NvaSdEventType", itemAction: new GetItem( 'ChangeRequest' ) }  
+      ) );
+
+      this.store.dispatch( 
+        new ExecItemAction( 
+          {  name: "NvaSdEventType", itemAction: new GetItem( 'SafetyInformationСA' ) }  
+      ) );
+
+
+      this.store.dispatch( 
+        new ExecItemAction( 
+          {  name: "NvaSdEventType", itemAction: new GetItem( 'ЛА3e' ) }  
+        ) );
+  
+    //this.store.pipe(select(fromSelectors.getFlightFids)).subscribe(x=> console.log(x));    
+
+    this.store.select( x=> x)
+       .subscribe(x=> console.log(x));
 
     this.flights$ = this.store.pipe(select(fromSelectors.getFlightFids));    
     //this.flights$.subscribe(x=> console.log(x));

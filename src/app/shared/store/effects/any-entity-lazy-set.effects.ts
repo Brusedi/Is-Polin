@@ -32,14 +32,14 @@ export class anyEntytySetEffects {
         map( ([act,store]) => ({ action: <ExecItemAction>act  , store }) ),
         mergeMap( x => this.procNextSubAction(
                 x.action, 
-                this.procSubAction(x.action.payload.itemAction, x.store.references[x.action.payload.name].location ) 
+                this.procSubAction(x.action.payload.itemAction, x.store.references[x.action.payload.name].location, x.store.references[x.action.payload.name].selBack ) 
         ) ) );    
+ 
 
-
-    private procSubAction = ( action : anyEntityLazyActions, loc: string ): Observable<any> => {
+    private procSubAction = ( action : anyEntityLazyActions, loc: string ,fun: (any)=> string ): Observable<any> => {
         switch(action.type){
             case ( AnyEntityLazyActionTypes.GET_ITEM ) :
-                return this.dataService.items( loc, "?CUSTACCOUNT="+action.payload ) 
+                return this.dataService.items( loc, fun(action.payload) )// "/"+action.payload ) //?CUSTACCOUNT="+action.payload
                       .map( x => x.length > 0 ? 
                           new GetItemSuccess(x[0]) :
                           new GetItemNotFound( action.payload ) 

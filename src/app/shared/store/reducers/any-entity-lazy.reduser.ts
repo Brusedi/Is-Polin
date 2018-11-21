@@ -1,5 +1,5 @@
 import { EntityState, createEntityAdapter, EntityAdapter } from "@ngrx/entity";
-import { AnyEntity, custImages } from "@appModels/any-entity";
+
 import { anyEntityLazyActions, AnyEntityLazyActionTypes } from "@appStore/actions/any-entity-lazy.actions";
 
 
@@ -31,13 +31,24 @@ export function anyEntytyinitialState<T>(){
     return  adapter<T>().getInitialState(initialSubState) ;
 };
 
+export function anyEntityLazySelectors<T>(){ return adapter<T>().getSelectors()};
+
+/// From selfunction reduser && initstate 
+export function initStateFromSelFoo<T>( selFoo: ((T) => any) ){ 
+    return initStateFromAdapter( createEntityAdapter<T>({selectId:selFoo}))
+} 
+export function reducerFromSelFoo<T>( selFoo: ((T) => any) ){ 
+    return reducerFromAdapter( createEntityAdapter<T>({selectId:selFoo}))
+} 
+
+export function selectorsFromSelFoo<T>( selFoo: ((T) => any) ){
+    return createEntityAdapter<T>({selectId:selFoo}).getSelectors()
+} 
+
+/// From adapter reduser && initstate 
 export function initStateFromAdapter( adapter: EntityAdapter<any> ){
     return adapter.getInitialState(initialSubState) ;
 } 
-
-export function anyEntityLazySelectors<T>(){ return adapter<T>().getSelectors()};
- 
-
 export function reducerFromAdapter( adapt: EntityAdapter<any>){
 
     function reducer(state = initStateFromAdapter(adapt), action: anyEntityLazyActions): AnyEntytyState<any>{
@@ -49,21 +60,14 @@ export function reducerFromAdapter( adapt: EntityAdapter<any>){
                 return { ...state, loading: true };    
 
             case AnyEntityLazyActionTypes.GET_ITEM_SUCCESS:{
-                console.log(state);
+                //console.log(state);
                 var s =
-                    //createEntityAdapter<any>({ selectId: (x => x.custaccount ) }).addOne( 
                     adapt.addOne( 
-                        action.payload
-                         //   <custImages>{recid:333333,  custaccount:'eeeeeeeeeeeee',image : '33333',  path: '4444444444'}
-                        //action.payload,
-                        //<custImages[]>( [ <custImages>{recid:333333,  custaccount:'eeeeeeeeeeeee',image : '33333',  path: '4444444444'},
-                        //<custImages>{recid:333,  custaccount:'eeeeeeeeeeeee',image : '33333',  path: '4444444444'}
-                        //]
-                      ,
+                        action.payload,
                         { ...state , loaded: false, loading: true, notExistKeys: removeIfExit(state.notExistKeys, action.payload ) }
                     );  
 
-                console.log(s);
+                //console.log(s);
                 return s;        
             }
                 
