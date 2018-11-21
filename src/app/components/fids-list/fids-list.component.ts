@@ -10,6 +10,8 @@ import * as fromSelectors from '@appStore/selectors/flight-fids.selectors';
 import { GetFlights } from '@appStore/actions/flight-fids.actions';
 import { AddItem, ExecItemAction } from '@appStore/actions/any-entity-lazy-set.actions';
 import { GetItem } from '@appStore/actions/any-entity-lazy.actions';
+import { createEntityAdapter } from '@ngrx/entity';
+import { custImages } from '@appModels/any-entity';
 
 @Component({
   selector: 'app-fids-list',
@@ -28,19 +30,40 @@ export class FidsListComponent implements OnInit {
 
     this.store.dispatch( new GetFlights() )  
     
-    this.store.dispatch( new AddItem({ name: "CompanyImages", location:"/NvaAx/NVAOMACUSTLOGO"}  ) )
+    this.store.dispatch( new AddItem({ 
+      name: "CompanyImages", 
+      location:"/NvaAx/NVAOMACUSTLOGO", 
+      adapter: createEntityAdapter<custImages>(   { selectId: (x => x.custaccount ) }  
+               
+        ) }  ) )
+
+    this.store.dispatch( 
+      new ExecItemAction( 
+        {  name: "CompanyImages", itemAction: new GetItem( 'ЛА' ) }  
+    ) );
 
     this.store.dispatch( 
       new ExecItemAction( 
         {  name: "CompanyImages", itemAction: new GetItem( 'СУ' ) }  
     ) );
 
+    this.store.dispatch( 
+      new ExecItemAction( 
+        {  name: "CompanyImages", itemAction: new GetItem( 'ЛА3' ) }  
+    ) );
 
-    this.store.select( x=> x.references.CompanyImages)
-      .subscribe(x=> console.log(x));
+    this.store.dispatch( 
+      new ExecItemAction( 
+        {  name: "CompanyImages", itemAction: new GetItem( 'ЛА3e' ) }  
+    ) );
+
+    //this.store.pipe(select(fromSelectors..getFlightFids));    
+
+    // this.store.select( x=> x)
+    //   .subscribe(x=> console.log(x));
 
     this.flights$ = this.store.pipe(select(fromSelectors.getFlightFids));    
-    this.flights$.subscribe(x=> console.log(x));
+    //this.flights$.subscribe(x=> console.log(x));
 
   }
 

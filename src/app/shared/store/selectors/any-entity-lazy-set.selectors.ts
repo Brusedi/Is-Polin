@@ -1,14 +1,14 @@
-import { createFeatureSelector, createSelector } from "@ngrx/store";
+// import { createFeatureSelector, createSelector } from "@ngrx/store";
 
-import * as fromReducers from "@appStore/reducers/flight-fids.reducer";
+// import * as fromReducers from "@appStore/reducers/flight-fids.reducer";
 
-export const getFlightFidsStore = createFeatureSelector('flightFids');
+// export const getStore = createFeatureSelector('Test');
 
-export const getFlightFidsEntities = createSelector(
-    getFlightFidsStore,
-    fromReducers.flightFidsEntitySelectors.selectAll
-);
+// export const getEntities = createSelector(
+//     getStore,
+//     fromReducers.flightFidsEntitySelectors.selectAll
+// );
   
-export const getFlightFids = createSelector(getFlightFidsEntities, entities => {
-    return Object.values(entities);
-});  
+// export const getFlightFids = createSelector(getFlightFidsEntities, entities => {
+//     return Object.values(entities);
+// });  

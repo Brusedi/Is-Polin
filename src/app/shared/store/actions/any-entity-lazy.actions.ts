@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { AnyEntity } from '@appModels/any-entity';
+//import { AnyEntity } from '@appModels/any-entity';
 
 export enum AnyEntityLazyActionTypes {
     GET_ITEM           = '[Any entity] Load item',
@@ -13,9 +13,9 @@ export class GetItem implements Action {
     constructor(public payload: any ) {}
 }
 
-export class GetItemSuccess implements Action {
+export class GetItemSuccess<T> implements Action {
     readonly type = AnyEntityLazyActionTypes.GET_ITEM_SUCCESS;
-    constructor(public payload: AnyEntity ) {}
+    constructor(public payload: T ) {}
 }
 
 export class GetItemNotFound implements Action {
@@ -30,7 +30,7 @@ export class ErrorAnyEntity implements Action {
 
 export type anyEntityLazyActions =
   | GetItem
-  | GetItemSuccess
+  | GetItemSuccess<any>
   | GetItemNotFound
   | ErrorAnyEntity
   ;
