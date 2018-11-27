@@ -1,14 +1,69 @@
-// import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { createSelector, createFeatureSelector } from "@ngrx/store";
+import { AnyEntytySetItemState } from "@appStore/reducers/any-entity-lazy-set.reduser";
+import { selectorsFromSelFoo } from "@appStore/reducers/any-entity-lazy.reduser";
 
-// import * as fromReducers from "@appStore/reducers/flight-fids.reducer";
+export const referencesStore = createFeatureSelector('references');
 
-// export const getStore = createFeatureSelector('Test');
+export const selectReferences = createSelector(
+    referencesStore,
+    x => x 
+);
 
-// export const getEntities = createSelector(
-//     getStore,
-//     fromReducers.flightFidsEntitySelectors.selectAll
+export const selectReference = ( id: string ) => 
+    createSelector(
+        selectReferences,
+        references =>   references[id]
+);
+
+export const selectReferenceOptions = ( id: string ) => 
+    createSelector(
+        selectReference(id),
+        (reference:AnyEntytySetItemState<any>) =>   reference.option
+);
+
+export const selectReferenceSelectors = ( id: string ) => 
+    createSelector(
+        selectReferenceOptions(id),
+        x => selectorsFromSelFoo( x.selectId ).selectAll
+);
+
+export const selectReferenceAll = ( id: string ) => 
+    createSelector(
+        selectReference(id),
+        (ref:AnyEntytySetItemState<any>) => selectorsFromSelFoo( ref.option.selectId).selectAll(ref.state)
+);
+
+export const selectReferenceItem = ( id: string, key:any ) => 
+    createSelector(
+        selectReferenceAll(id),
+        selectReferenceOptions(id),
+        (items, opt ) => items.find( x => opt.selectId(x) ==  key )   
+);
+
+export const selectReferenceItemNotFound = ( id: string, key:any ) => 
+    createSelector(
+        selectReference(id),
+        (x:AnyEntytySetItemState<any>) => (x.state.notExistKeys.find( z => z==key ) != undefined)  
+);
+
+
+export const selectItemWasSearhing = ( id: string, key:any ) => 
+    createSelector(
+        selectReferenceItem(id,key),
+        selectReferenceItemNotFound(id,key),
+        ( x, y ) => (x != undefined) || y
+);
+
+
+
+// export const selectRefItems = ( id: string ) => 
+//     createSelector(
+//         selectReference,
+//         references =>   references[id]
 // );
-  
-// export const getFlightFids = createSelector(getFlightFidsEntities, entities => {
-//     return Object.values(entities);
-// });  
+
+// export const selectReference = ( id: string ) => 
+//     createSelector(
+//          selectReferences,
+//          references =>   references[id]
+//     );

@@ -46,10 +46,7 @@ const appRoutes: Routes = [
   providers: [
     AppSettingsService,
     DataProvService,
-    FlightFidsService
-    
-    
-    
+    FlightFidsService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,20 +1,26 @@
 import { EntityAdapter } from "@ngrx/entity";
 
-import { AnyEntityLazySetAction, AnyEntityLazySetActionTypes, ExecItemAction }   from "@appStore/actions/any-entity-lazy-set.actions";
-import { AnyEntytyState, anyEntytyinitialState, initStateFromAdapter }  from "./any-entity-lazy.reduser";
+import { AnyEntityLazySetAction, AnyEntityLazySetActionTypes, ExecItemAction  }   from "@appStore/actions/any-entity-lazy-set.actions";
+import { AnyEntytyState }  from "./any-entity-lazy.reduser";
 import * as fromEntityReduser from "./any-entity-lazy.reduser"
 import { anyEntityLazyActions } from "@appStore/actions/any-entity-lazy.actions";
 
+
+// Опции для AnyEntityLazy - итема
+export interface anyEntityOptions<T>{
+    name:       string          
+    location:   string                  // http sublocation  key 
+    selectId:   (i:T) => any              // entity to id value func    
+    selBack:    (any) => string         // id value to http sublocation suffix
+} 
 
 
 // 
 export interface AnyEntytySetItemState<T> {
     state      : AnyEntytyState<T>,
-    location   : string                        // http sublocation  key 
-    selectId   : (T) => any                    // entity to id value func
-    selBack    : (any) => string               // id value to http sublocation suffix
+    option     : anyEntityOptions<T>
+    action?    : anyEntityLazyActions 
 
-    action? : anyEntityLazyActions 
     //checking: boolean ,
     //cheked:false,
     //error: any ;
@@ -34,24 +40,28 @@ export function reducer(state :State  = initialState, action: AnyEntityLazySetAc
     //console.log( action) ;
     switch (action.type) {
 
+
         case AnyEntityLazySetActionTypes.ADD_ANY_ENTITY_LAZY:
             return { ...state, [action.payload.name]: { 
                                     state:      fromEntityReduser.initStateFromSelFoo( action.payload.selectId),
-                                    location:   action.payload.location,
-                                    selectId:   action.payload.selectId,
-                                    selBack:    action.payload.selBack,
+                                    option:     action.payload,
                                     action:     null 
                                 } };    
+
+        case AnyEntityLazySetActionTypes.EXEC : {                                
+            action.reduserData = (< AnyEntytySetItemState<any>>state[action.payload.name]).option;
+            return {...state};
+        }            
 
         case AnyEntityLazySetActionTypes.EXEC_ANY_ENTITY_LAZY_ACTION: {
             //console.log(action.payload);
             //console.log(state);
             var s = { ...state, 
-                        [action.payload.name]:{ 
-                            ...state[action.payload.name],
+                        [action.payload.itemOption.name]:{ 
+                            ...state[action.payload.itemOption.name],
                             action: (<ExecItemAction>action).payload.itemAction,
-                            state: fromEntityReduser.reducerFromSelFoo( state[action.payload.name].selectId )(
-                                state[action.payload.name].state, (<ExecItemAction>action).payload.itemAction 
+                            state: fromEntityReduser.reducerFromSelFoo( state[action.payload.itemOption.name].option.selectId )(
+                                state[action.payload.itemOption.name].state, (<ExecItemAction>action).payload.itemAction 
                             )     
                     }};
             //console.log(s);        
