@@ -16,6 +16,7 @@ import { FlightFidsService } from './shared/services/flight-fids.service';
 import { HttpModule } from '@angular/http';
 import { FidsItemBaseComponent } from './components/fids-item-base/fids-item-base.component';
 import { FlightFids2FlightPipe } from './pipes/flight-fids-2-flight.pipe';
+import { CanvasIspComponent } from './components/canvas-isp/canvas-isp.component';
 
 
 const appRoutes: Routes = [
@@ -31,7 +32,8 @@ const appRoutes: Routes = [
     FidsListComponent,
     IspolinHpComponent,
     FidsItemBaseComponent,
-    FlightFids2FlightPipe
+    FlightFids2FlightPipe,
+    CanvasIspComponent
   ],
   imports: [
     HttpModule,
