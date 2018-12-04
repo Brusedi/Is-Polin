@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit,ViewChild, ElementRef } from '@angular/core';
 import { DrDrawTest } from 'app/shared/graphics/corel-droch';
+import { drawIconTest } from 'app/shared/graphics/jg-canvas/jg-canvas-base';
 
 
 @Component({
@@ -22,15 +23,8 @@ export class CanvasIspComponent implements OnInit , AfterViewInit {
   public ngAfterViewInit() {
     // get the context
     this.context = (<HTMLCanvasElement>this.myCanvas.nativeElement).getContext('2d');
-    //this.context.fillRect(0, 0, 100, 100);
-    this.context.beginPath();
-    this.context.moveTo(10, 15);
-    this.context.bezierCurveTo(75, 55, 175, 20, 250, 15);
-    this.context.moveTo(10, 15);
-    this.context.quadraticCurveTo(100, 100, 250, 15);
-    this.context.stroke();
-
-    DrDrawTest(this.context);
+   
+    drawIconTest(this.context); 
 
   }
 
